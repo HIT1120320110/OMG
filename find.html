@@ -1,0 +1,189 @@
+<?php
+	session_start();
+	if(!isset($_SESSION['ID']))
+	{
+		require('loginfunction.php');
+		redirect_user('login.html');
+	}
+?>
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> </html><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> </html><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> </html><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title>目的地</title>
+	<meta name="description" content="Tour Pal Home" />
+	<meta name="author" content="solojoe" />
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="./stylesheets/base.css" />
+	<link rel="stylesheet" href="./stylesheets/skeleton.css" />
+	<link rel="stylesheet" href="./stylesheets/layout.css" />
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif:400italic' rel='stylesheet' type='text/css' />
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<!-- Favicons
+	================================================== -->
+
+        <script type="text/javascript" src="./js/jquery.1.70.js"></script>
+        <script type="text/javascript" src="./js/jquery.eislideshow.js"></script>
+        <script type="text/javascript" src="./js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="./js/jquery.tweet.js"></script>		
+        <script type="text/javascript" src="./js/custom.js"></script>
+		<script type="text/javascript" src="./js/my.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+<div class="header">
+<div class="container">
+<div class="Catalog">
+<img src="./images/logo.png" alt="" class="logo"  height="50" width="70"/>
+<ul class="menu">
+<li><a href="./index.html">首页</a></li>
+<li><a href="./find.html"></a>寻找景点</li>
+<li><a href="./person.html">个人中心</a>
+<li><a href="./BBS.html">BBS论坛</a></li>
+<li><a href="./team.html">我们的团队</a></li>
+<li><a href="./contact.html">联系我们</a></li>
+<li><a href="./logout.php">退出</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- end of header -->
+<div id="main" class="container">
+<div class="eleven columns">
+
+<div class="blogpost">
+<a href="#" class="featuredimg"><img src="./images/kaini.png" alt="post" /></a>
+<div class="excerpt">
+<h3><a href="#">卡尼岛&nbsp&nbsp(Kani Island)</a></h3>
+<div class="whos">
+<div><span>地理位置:&nbsp;</span> 马尔代夫的马累北环礁</div>
+<div><span>推荐人:&nbsp;</span> <a href="#">Jack</a></div>
+<br/>
+<br/>
+<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span> <a  class="buttongreen" href="#"><h4>赞一个</h4></a></div>
+</div>
+<div class="excerpt2"><p>
+&nbsp&nbsp&nbsp&nbsp卡尼岛，印度洋上的“绿洲花园”，岛上的一切都显得简单、自然，所有的世俗烦恼在
+这清新如微风的感觉中消失得无踪影，安详与宁静也将心情洗涤如新。在卡尼岛上，沙滩、海水、棕榈树都带
+着一丝与世隔绝的超脱感，仿佛没有沾染到一丝人世间的气息。在这里，可以静静地坐在海边的吊椅上，
+看海浪的起伏，任凭海风从双肩掠过，带去丝丝的失落，又唤回一些年轻的想象。
+　<br>&nbsp&nbsp&nbsp&nbsp卡尼岛距首都马累20公里。卡尼岛人纯朴、好客...
+<a href="#">更多信息</a>
+</p>
+ </div>
+</div>
+
+</div>
+<div class="blogpost">
+<a href="#" class="featuredimg"><img src="./images/yjj.png" height="250" width="400" alt="post" /></a>
+<div class="excerpt">
+<h3><a href="#">袁家界</a></h3>
+<div class="whos">
+<div><span>地理位置:&nbsp;</span> 湖南省张家界市砂刀沟北麓</div>
+<div><span>推荐人:&nbsp;</span> <a href="#">陆晓曼</a></div>
+<br/>
+<br/>
+<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span> <a  class="buttongreen" href="#"><h4>赞一个</h4></a></div>
+</div>
+<div class="excerpt2">
+&nbsp&nbsp&nbsp&nbsp袁家界位于张家界森林公园北部，是镶嵌在武陵源核心景区的一颗明珠。
+袁家界风景以雄、奇、险、峻着称，在十多华里的环山游道上，沿途景色美不胜数。
+　<br/>&nbsp&nbsp&nbsp&nbsp袁家界位于杉刀沟北麓，是以石英岩为主构成的一座巨大而较平缓的山岳，
+是张家界公园又一处风景集中地。与世界上最美丽的峡谷金鞭溪一衣带水，东接索溪峪，南眺鹞子寨，西
+望黄石寨，北靠天子山，总面积约1200公顷，平均海拔1074米。站在袁家界景区的观景台上，三千奇峰尽收
+眼底，雄险秀野，神态各异。峡谷深处，千百根石峰石柱奇伟突立。峻峭之石，如英武将帅；嵯峨之峰...
+ <a href="#">更多信息</a>
+</div>
+</div>
+
+</div>
+<div class="blogpost">
+<a href="#" class="featuredimg"><img src="./images/NZ.png" alt="post" /></a>
+<div class="excerpt">
+<h3><a href="#">新西兰·奥克兰:&nbsp&nbsp(Auckland)</a></h3>
+<div class="whos">
+<div><span>地理位置:&nbsp;</span> 新西兰北岛</div>
+<div><span>推荐人:&nbsp;</span> <a href="#">JR Smith</a></div>
+<br/>
+<br/>
+<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span> <a  class="buttongreen" href="#"><h4>赞一个</h4></a></div>
+</div>
+<div class="excerpt2">
+&nbsp&nbsp&nbsp&nbsp奥克兰（Auckland）位于新西兰北岛，依海而建，景色优美，是新西兰第一大城市。
+奥克兰四周被海洋和火山环抱，有美丽的港湾和壮观的大桥，这里吸引了
+世界各国的帆船爱好者，奥克兰是全世界拥有私人船只比率最高的城市，
+有“帆船之都”的美誉（每年1月的帆船竞赛场面十分壮观）。 ...
+ <a href="#">更多信息</a>
+</div>
+</div>
+
+</div>
+
+<div class="navigate">
+<a href="#" class="larr">&larr; 上一页</a>
+<a href="#" class="rarr">下一页 &rarr;</a>
+</div>
+
+</div>
+
+
+
+
+<div class="five columns sidebarhome aspages">
+<div class="sidinside">
+
+<div class="widget">
+<div class="h4"><h4>寻找美丽</h4></div>
+<div class="clear"></div>
+
+<form class="searchsidebar" action="find.php" method="post" />
+<input type="text" class="sinput" name="sinput" value="" />
+<?php
+echo '<input type="hidden" name="IE" value="0">';
+?>
+<input type="submit" class="sgo" value="搜寻" />
+</form>
+
+</div>
+<div class="widget">
+<div class="h4bg"><h4>Let's Go</h4></div>
+<div class="clear"></div>
+<p>
+有生之年，好好去看看这个世界上的美丽
+</p>
+</div>
+
+
+</div>
+
+</div>
+</div>
+
+
+<!-- end of main home -->
+<div class="footerstrip">
+<div class="container">
+<div class="sixteen columns">
+觉得网站不错？分享给其他人吧！！！
+<ul class="socials">
+<li> share by</li>
+<li class="fb"><a href="#"><img src="./images/sina1.png" height="20" width="20" alt="sina" /></a></li>
+<li class="vimeo"><a href="#"><img src="./images/QQ.png" height="20" width="20" alt="QQ" /></a></li>
+<li class="tw"><a href="#"><img src="./images/RR.png" height="20" width="20" alt="renren" /></a></li>
+<li class="flickr"><a href="#"><img src="./images/flickr.png" alt="flickr" /></a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- end funter -->
+</body>
+</html>

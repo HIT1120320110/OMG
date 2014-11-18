@@ -1,0 +1,202 @@
+<?php
+	session_start();
+	if(!isset($_SESSION['ID']))
+	{
+		require('loginfunction.php');
+		redirect_user('login.html');
+	}
+?>
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> </html><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> </html><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> </html><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title>目的地</title>
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="./stylesheets/base.css" />
+	<link rel="stylesheet" href="./stylesheets/skeleton.css" />
+	<link rel="stylesheet" href="./stylesheets/layout.css" />
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif:400italic' rel='stylesheet' type='text/css' />
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<!-- Favicons
+	================================================== -->
+
+              <script type="text/javascript" src="./js/jquery.1.70.js"></script>
+        <script type="text/javascript" src="./js/jquery.eislideshow.js"></script>
+        <script type="text/javascript" src="./js/jquery.easing.1.3.js"></script>
+		<script type="text/javascript" src="./js/jquery.tweet.js"></script>	
+        <script type="text/javascript" src="./js/custom.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+<div class="header">
+<div class="container">
+<div class="Catalog">
+<img src="./images/logo.png" alt="" class="logo"  height="50" width="70"/>
+<ul class="menu">
+<li><a href="./index.html">首页</a></li>
+<li><a href="./find.html">寻找景点</a></li>
+<li><a href="./person.html"></a>个人中心</li>
+<li><a href="./BBS.html">BBS论坛</a></li>
+<li><a href="./team.html">我们的团队</li>
+<li><a href="./contact.html">联系我们</a></li>
+<li><a href="./logout.php">退出</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- end of header -->
+<?php
+require('mysql.php');
+$ID = $_SESSION['ID'];
+$q = "SELECT * FROM users WHERE ID = '$ID'";
+$r = @mysqli_query($dbc,$q);
+if($r){
+?>
+<div id="main" class="container">
+
+<div class="five columns sidebarhome aspages">
+<div class="sidinside">
+
+<div class="widget">
+<div class="h4"><h4>个人头像</h4></div>
+<img src="./images/t1.jpg" height="120" width="150" />
+</form>
+
+</div>
+<div class="widget">
+<div class="h4bg"><h4>我的关注</h4></div>
+<div class="clear"></div>
+<p>
+有生之年，好好去看看这个世界上的美丽
+</p>
+</div>
+
+
+</div>
+
+</div>
+<div class="contactform">
+<div class="ten columns">
+<div class="pad">
+<h3>基本资料
+</h3>
+<div class="forty">
+<label>姓名:</label>
+<?php
+echo '<p>';
+$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+echo $row['name'];
+echo '</p>';
+?>
+</div>
+<div class="forty">
+<label>Email:</label>
+<?php
+echo '<p>';
+echo $row['email'];
+echo '</p>';
+?>
+</div>
+<div class="forty">
+<label>年龄:</label>
+<?php
+echo '<p>';
+echo $row['age'];
+echo '</p>';
+?>
+</div>
+<div class="forty">
+<label>所在学校</label>
+<?php
+echo '<p>';
+echo $row['school'];
+echo '</p>';
+?>
+</div>
+</div>
+<div class="pad">
+<h3>其他资料
+</h3>
+<?php
+$q = "SELECT * FROM person WHERE ID = '$ID'";
+$r = @mysqli_query($dbc,$q);
+$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+?>
+<div class="forty">
+<label>最想去的地方</label>
+<?php
+echo '<p>';
+echo $row['wantgo'];
+echo '</p>';
+?>
+</div>
+
+<div class="forty">
+<label>去过的地方</label>
+<?php
+echo '<p>';
+echo $row['going'];
+echo '</p>';
+?>
+</div>
+<div class="forty">
+<label>星座</label>
+<?php
+echo '<p>';
+echo $row['XZ'];
+echo '</p>';
+?>
+</div>
+
+<div class="forty">
+<label>喜欢的旅行方式</label>
+<?php
+echo '<p>';
+echo $row['tour'];
+echo '</p>';
+?>
+</div>
+
+<label>个人介绍</label>
+<?php
+echo '<p>';
+echo $row['personal'];
+echo '</p>';
+?>
+<label>修改个人资料</label>
+<p><a href="./change.html" class="buttongreen">确定</a></p>
+</div>
+</div>
+</div>
+</div>'
+<?php
+;}
+?>
+
+<!-- end of main home -->
+<div class="container">
+<div class="sixteen columns">
+觉得网站不错？分享给其他人吧！！！
+<ul class="socials">
+<li> share by</li>
+<li class="fb"><a href="#"><img src="./images/sina1.png" height="20" width="20" alt="sina" /></a></li>
+<li class="vimeo"><a href="#"><img src="./images/QQ.png" height="20" width="20" alt="QQ" /></a></li>
+<li class="tw"><a href="#"><img src="./images/RR.png" height="20" width="20" alt="renren" /></a></li>
+<li class="flickr"><a href="#"><img src="./images/flickr.png" alt="flickr" /></a></li>
+</ul>
+</div>
+</div>
+<!-- end funter -->
+</body>
+</html>

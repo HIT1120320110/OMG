@@ -1,0 +1,7 @@
+<?php
+	if(!isset($_COOKIE['ID']))
+	{
+		require('loginfunction.php');
+		redirect_user('login.html');
+	}
+?>
