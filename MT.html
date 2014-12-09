@@ -1,0 +1,208 @@
+<?php
+	session_start();
+	if(!isset($_SESSION['ID']))
+	{
+		require('loginfunction.php');
+		redirect_user('login.html');
+	}
+?>
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> </html><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> </html><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> </html><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title>目的地</title>
+	<meta name="description" content="Tour Pal Home" />
+	<meta name="author" content="solojoe" />
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="./stylesheets/base.css" />
+	<link rel="stylesheet" href="./stylesheets/skeleton.css" />
+	<link rel="stylesheet" href="./stylesheets/layout.css" />
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif:400italic' rel='stylesheet' type='text/css' />
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<!-- Favicons
+	================================================== -->
+
+        <script type="text/javascript" src="./js/jquery.1.70.js"></script>
+        <script type="text/javascript" src="./js/jquery.eislideshow.js"></script>
+        <script type="text/javascript" src="./js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="./js/jquery.tweet.js"></script>		
+        <script type="text/javascript" src="./js/custom.js"></script>
+		<script type="text/javascript" src="./js/my.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+<div class="header">
+<div class="container">
+<div class="Catalog">
+<img src="./images/logo.png" alt="" class="logo"  height="50" width="70"/>
+<ul class="menu">
+<li><a href="./index.html">首页</a></li>
+<li><a href="./find.html">寻找景点</a></li>
+<li><a href="./person.html">个人中心</a>
+<li><a href="./BBS.html">BBS论坛</a></li>
+<li><a href="./team.html">我们的团队</a></li>
+<li><a href="./contact.html">联系我们</a></li>
+<li><a href="./logout.php">退出</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- end of header -->
+
+<?php
+	$s = $_SESSION['ID'];
+	require('mysql.php');
+	$q = "SELECT * FROM PI WHERE ID = '$s'";	
+	$r = @mysqli_query($dbc,$q);
+		echo "<div id='main' class='container'>";
+		echo "<span><h1>推荐景点:</h1></span>";
+		echo "<div class='eleven columns'>";
+	if($r){
+	$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+	$s1 = $row['loveplace'];
+	$file =file( "$s1" );
+	$i=0;
+	foreach($file as $value )
+	{
+		if($i!=0){
+		$value = trim($value);
+		$q = "SELECT * FROM place WHERE name =  '$value'" ;		
+		$r = @mysqli_query($dbc,$q);
+		if($r)
+		{
+			$row1 = mysqli_fetch_array($r,MYSQLI_ASSOC);
+			$s2 = $row1['img'];
+		echo "<div class='blogpost'>";
+		echo "<a href='#' class='featuredimg'><img src='$s2' alt='post' /></a>";
+		echo "<div class='excerpt'> ";
+	echo "<h3><a href='#'> $value</a></h3>";
+	echo "<div class='whos'>
+		<br/>
+		<br/>
+		<div>
+		<form class='searchsidebar' action='find.php' method='post' />
+		<input type='hidden' name='sinput' value='$value' />
+		<input type='hidden' name='IE' value='4'>;
+		<input type='submit' class='sgo' value='查看详情' />
+		</form>";
+	echo"</div>";
+	echo"</div>
+	<div class='excerpt2'>
+	";
+	$s3 = $row1['txt'];
+	$file =file( "$s3" );
+	foreach($file as $value1)
+	{
+		echo $value1;
+	}
+echo 	"</div>
+		</div>
+		</div>";
+	}
+	}
+	$i = $i + 1;
+	}
+	if($i<2)
+	{
+		echo "<span>你还没有喜欢的景点！不如去寻找寻找</span>";
+	}
+	
+	}
+?>
+</div>
+<div class="five columns sidebarhome aspages">
+<div class="sidinside">
+
+<div class="widget">
+<?php
+$ID = $_SESSION['ID'];
+$q = "SELECT * FROM PI WHERE ID = '$ID'";
+$r1 = @mysqli_query($dbc,$q);
+$row = mysqli_fetch_array($r1,MYSQLI_ASSOC);
+$pic = $row['img'];
+?>
+<div class="h4"><h4>我的信息</h4></div>
+<div class="clear"></div>
+<?php
+echo "<img src='$pic' height='140' width='180'>";
+?>
+</div>
+<?php
+	$file =file( "$s1" );
+	$i = 0;
+	foreach($file as $value)
+	{
+	$value = trim($value);
+	if($i!=0)
+	{
+	echo '<div class="widget">';
+	echo '<div class="h4bg"><h4>';
+	echo $value;
+	echo '的队友推荐</h4></div>';
+	echo '<div class="clear"></div>';
+	echo '<div style=" font-size:18px; color:#000">';
+	$q = "SELECT * FROM placelove WHERE name = '$value'";
+	$re = @mysqli_query($dbc,$q);
+	$row4 = mysqli_fetch_array($re,MYSQLI_ASSOC);
+	$ss = $row4['loveperson'];
+	$file2 = file($ss);
+	$j = 0;
+		foreach($file2 as $value2){
+		if($j!=0){
+			$value2 = trim($value2);
+			$ID = $_SESSION['ID'];
+			$q = "SELECT * FROM users WHERE ID = '$ID'";
+			$re = @mysqli_query($dbc,$q);
+			$row4 = mysqli_fetch_array($re,MYSQLI_ASSOC);
+			$name = $row4['name'];
+			if($value2 != $name)
+			{
+			echo '<a href="./other.html? othername='.$value2.'" >';
+			echo $value2;
+			echo'</a>';
+			echo'<br/>';
+			echo'<br/>';
+			}
+		}
+		$j = $j+1;
+		}
+	echo '</div>';
+	echo '</div>';
+	}
+	$i = $i+1;
+}
+?>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- end of main home -->
+<div class="footerstrip">
+<div class="container">
+<div class="sixteen columns">
+觉得网站不错？分享给其他人吧！！！
+<ul class="socials">
+<li> share by</li>
+<li class="fb"><a href="#"><img src="./images/sina1.png" height="20" width="20" alt="sina" /></a></li>
+<li class="vimeo"><a href="#"><img src="./images/QQ.png" height="20" width="20" alt="QQ" /></a></li>
+<li class="tw"><a href="#"><img src="./images/RR.png" height="20" width="20" alt="renren" /></a></li>
+<li class="flickr"><a href="#"><img src="./images/flickr.png" alt="flickr" /></a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- end funter -->
+</body>
+</html>
