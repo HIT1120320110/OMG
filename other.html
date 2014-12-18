@@ -180,6 +180,52 @@ echo "<input type='hidden' name= 'I'value= '1'>";
 <div class="widget">
 </div>
 </div>
+<div class="five columns sidebarhome aspages">
+<div class="sidinside">
+
+<div class="widget">
+<div class="clear"></div>
+<div class="h4bg"><h3>他的日志</h3></div>
+<?php
+	$q = "SELECT * FROM users WHERE name = '$othername'";
+	$rx = @mysqli_query($dbc,$q);
+	$rowx =  mysqli_fetch_array($rx,MYSQLI_ASSOC);
+	$IH = $rowx['ID'];
+	$filepath = './txt/tour/'.$IH;
+	$ch = opendir($filepath);
+	if ($ch) {
+        while ( ($filename = readdir ( $ch )) != false ) {
+            $filetype = substr ( $filename, strripos ( $filename, "." ) + 1 );
+            if ($filetype == "txt" && is_file ( $filepath . "/" . $filename )) {
+			$ss = explode(".",$filename);
+			$i = 0;
+			foreach($ss as $a)
+			{
+				if($i ==0){
+				$q = "SELECT * FROM Daily WHERE time = '$a'";
+				$r = @mysqli_query($dbc,$q);
+				if($r){
+				$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+				$a = $row['title'];
+				echo"<div  class='pad' style='color:#000'><h3>";
+				echo '<a href="./otherbook.php? titlename='.$a.'&IE='.$IH.'" >';
+				echo '';
+				echo $a;
+				echo "<br/>";
+				echo "<br/></a></h3></div>";
+				}
+				}
+				$i =$i+1;
+			}
+            }
+        }
+        closedir ( $ch );
+    }
+?>
+</div>
+</div>
+
+</div>
 </div>
 <div class="contactform">
 <div class="ten columns">
@@ -198,7 +244,7 @@ echo '</p>';
 <label>Email:</label>
 <?php
 echo '<p>';
-echo $row['email'];
+echo $rowx['email'];
 echo '</p>';
 ?>
 </div>
@@ -206,7 +252,7 @@ echo '</p>';
 <label>年龄:</label>
 <?php
 echo '<p>';
-echo $row['age'];
+echo $rowx['age'];
 echo '</p>';
 ?>
 </div>
@@ -214,7 +260,7 @@ echo '</p>';
 <label>所在学校</label>
 <?php
 echo '<p>';
-echo $row['school'];
+echo $rowx['school'];
 echo '</p>';
 ?>
 </div>

@@ -74,10 +74,16 @@
 			foreach($ss as $a)
 			{
 				if($i ==0){
+				$q = "SELECT * FROM Daily WHERE time = '$a'";
+				$r = @mysqli_query($dbc,$q);
+				if($r){
+				$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+				$a = $row['title'];
 				echo"<div  class='pad' style='color:#000'><h2>";
 				echo '<a href="./changeblog.html? blogname='.$a.'" >';
 				echo $a;
 				echo "</a></h2></div>";
+				}
 				}
 				$i =$i+1;
 			}
@@ -107,11 +113,20 @@
 <?php
 	if($_SERVER['REQUEST_METHOD']=='POST'){
 		$a = $_POST['fweb'];
-		$path = './txt/tour/'.$ID.'/'.$a.'.txt';
-		$file = fopen("$path","a");
+		$data = date('YmdHms');
+		$path = './txt/tour/'.$ID.'/'.$data.'.txt';
+		$q = "insert into  Daily values('$data','$a')";
+		$r = @mysqli_query($dbc,$q);
+		if($r){
+		$file = fopen("$path","a");		
 		echo "<div style='color:#000'><label><h2>日志保存成功<h2><label></div>";
 		fwrite($file,$_POST['message']);
 		fclose($file);
+		}
+		else
+		{
+			echo "<div style='color:#000'><label><h2>日志保存失败<h2><label></div>";
+		}
 	}
 ?>
 </div>

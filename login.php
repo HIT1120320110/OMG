@@ -97,7 +97,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 		$r = @mysqli_query($dbc, $q);
 		if($r)
 		{
-			$q = "insert into person values(0,0,0,0,0,0)";
+			$q = "select * from users where name = '$name'";
+			$r = @mysqli_query($dbc, $q);
+			$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+			$ID = $row['ID'];
+			$q = "insert into person values('$ID','暂无','暂无','暂无','暂无','暂无')";
+			$r = @mysqli_query($dbc,$q);
+			$img = "./images/h6.png";
+			$love = './txt/'.$ID.'-love'.'.txt';
+			$lovespace = './txt/'.$ID.'-loveplace'.'.txt';
+			$tour = './txt/tour/'.$ID.'/my'.'.txt';
+			$file = fopen("$love","a");
+			fwrite($file,"/\r\n");
+			fclose($file);
+			$file = fopen("$lovespace","a");
+			fwrite($file,"/\r\n");
+			fclose($file);
+			$q = "insert into PI values('$ID','$love','$img','$lovespace')";
 			$r = @mysqli_query($dbc,$q);
 			echo '<strong>you are now registered<br/></strong>';
 			echo '<p><a href="./login.html" class="buttongreen">login</a></p>';

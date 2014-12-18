@@ -62,7 +62,13 @@
 	if($_SERVER['REQUEST_METHOD']=='POST'){
 	if($_POST['IE']==0){
 		$file = $_POST['name'];
-		$filepath = './txt/tour/'.$ID.'/'.$file.'.txt';
+		$q = "SELECT * FROM Daily WHERE title = '$file'";
+		$r = @mysqli_query($dbc,$q);
+		$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+		$time = $row['time'];
+		$filepath = './txt/tour/'.$ID.'/'.$time.'.txt';
+		$a = filemtime($filepath);
+		$file_date= date('Y-m-d H:i:s',$a);
 		$filec = file("$filepath");
 ?>
 
@@ -87,18 +93,29 @@
 </textarea>
 <?php
 echo "<input type='hidden' name='name' value='$file'>";
+echo $file_date;
 ?>
 <input type="hidden" name="IE" value="1" />
 <input type="submit" class="buttongreen" id="fsubmit" name="fsubmit" value="修改日志" />
 </form>
 
+
 </div>
 </div>
 <?php
+		
+		echo "上次修改时间： ";
+		echo $file_date;
 		}
 		else{
 		$file = $_POST['name'];
-		$filepath = './txt/tour/'.$ID.'/'.$file.'.txt';
+		$q = "SELECT * FROM Daily WHERE title = '$file'";
+		$r = @mysqli_query($dbc,$q);
+		$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+		$time = $row['time'];
+		$filepath = './txt/tour/'.$ID.'/'.$time.'.txt';
+		$a = filemtime($filepath);
+	$file_date= date('Y-m-d H:i:s',$a);
 		$filec = file("$filepath");
 ?>
 
@@ -132,16 +149,28 @@ echo "<input type='hidden' name='name' value='$file'>";
 </div>
 <?php
 		$a = $_POST['name'];
-		$path = './txt/tour/'.$ID.'/'.$a.'.txt';
+		$q = "SELECT * FROM Daily WHERE title = '$a'";
+		$r = @mysqli_query($dbc,$q);
+		$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+		$time = $row['time'];
+		$path = './txt/tour/'.$ID.'/'.$time.'.txt';
 		$file = fopen("$path","w");
 		echo "<div style='color:#000'><label><h2>日志修改成功<h2><label></div>";
+		echo "上次修改时间： ";
+		echo $file_date;
 		fwrite($file,$_POST['message']);
 		fclose($file);
 		}
 	}
 	else{
 	$file = $blogname;
-	$filepath = './txt/tour/'.$ID.'/'.$file.'.txt';
+	$q = "SELECT * FROM Daily WHERE title = '$file'";
+	$r = @mysqli_query($dbc,$q);
+	$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+	$time = $row['time'];
+	$filepath = './txt/tour/'.$ID.'/'.$time.'.txt';
+	$a = filemtime($filepath);
+	$file_date= date('Y-m-d H:i:s',$a);
 		$filec = file("$filepath");
 ?>
 <div class="contactform">
@@ -169,7 +198,10 @@ echo "<input type='hidden' name='name' value='$file'>";
 <input type="hidden" name="IE" value="1" />
 <input type="submit" class="buttongreen" id="fsubmit" name="fsubmit" value="修改日志" />
 </form>
-
+<?php
+	echo "上次修改时间： ";
+	echo $file_date;
+?>
 </div>
 </div>
 <?php

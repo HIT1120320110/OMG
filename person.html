@@ -61,6 +61,8 @@ require('mysql.php');
 $ID = $_SESSION['ID'];
 $q = "SELECT * FROM users WHERE ID = '$ID'";
 $r = @mysqli_query($dbc,$q);
+$q = "SELECT * FROM PI WHERE ID = '$ID'";
+$r1 = @mysqli_query($dbc,$q);
 if($r){
 ?>
 <div id="main" class="container">
@@ -69,20 +71,45 @@ if($r){
 <div class="sidinside">
 
 <div class="widget">
-<div class="h4"><h4>个人头像</h4></div>
-<img src="./images/t1.jpg" height="120" width="150" />
-</form>
-
+<div class="h4"></div>
+<?php
+	$row2 = mysqli_fetch_array($r1,MYSQLI_ASSOC);
+	$pic = $row2['img'];
+	echo "<img src='$pic' height='140' width='180'>";
+?>
+<a class="buttongreen" href="picture.html" color="#FF0000" align="center">修改头像</a>
 </div>
 <div class="widget">
 <div class="h4bg"><h4>我的关注</h4></div>
 <div class="clear"></div>
-<p>
-有生之年，好好去看看这个世界上的美丽
-</p>
+<div style=" font-size:18px; color:#000">
+<?php
+	$love = $row2['love'];
+	$file =file( "$love" );
+	$i=0;
+	foreach($file as $value)
+	{
+		$value = trim($value);
+		if($i!=0){
+		if(trim($value) != "")
+		{
+			echo '<a href="./other.html? othername='.$value.'" >';
+			echo $value;
+			echo'</a>';
+			echo'<br/>';
+			echo'<br/>';
+		}
+		}
+		$i =$i+1;
+	}
+?>
 </div>
-
-
+</div>
+<div class="widget">
+<div class="h4bg"><h4>我的旅行日志</h4></div>
+<div class="clear"></div>
+<a class="buttongreen" href="makeblog.html">写日志</a>
+</div>
 </div>
 
 </div>

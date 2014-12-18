@@ -59,14 +59,20 @@
 <!-- end of header -->
 <div id="main" class="container">
 <?php
-	$path = './txt/tour/'.$IE.'/'.$titlename.'.txt';
+	require('mysql.php');
+	$q = "SELECT * FROM Daily WHERE title = '$titlename'";
+	$r = @mysqli_query($dbc,$q);
+	if($r){
+		$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+		$time = $row['time'];
+	}
+	$path = './txt/tour/'.$IE.'/'.$time.'.txt';
 	echo'
 	<div><h1>';
 	echo $titlename;
 	echo'<br/><h1></div>';
 	echo'
 	<div style=" font-size:18px; color:#000">&nbsp&nbsp作者:';
-	require('mysql.php');
 	$q = "SELECT * FROM users WHERE ID = '$IE'";
 	$r = @mysqli_query($dbc,$q);
 	if($r){

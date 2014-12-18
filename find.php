@@ -81,11 +81,18 @@
 <div class="excerpt">
 <h3><a href="#">美景介绍:&nbsp&nbsp</a></h3>
 <div class="whos">
-<div><span>地理位置:&nbsp;</span> 卡尼岛</div>
-<div><span>推荐人:&nbsp;</span> <a href="#">JR Smith</a></div>
 <br/>
 <br/>
-<div><span></span> <a  class="buttongreen" href="find.html"><h4>返回</h4></a></div>
+<div><span></span> <?php
+	if($pos!=4)
+	{
+		echo "<a  class='buttongreen' href='find.html'><h4>返回</h4></a></div>";
+	}
+	else
+	{
+		echo "<a  class='buttongreen' href='MT.html'><h4>返回</h4></a></div>";
+	}
+?>
 </div>
 <div class="excerpt2">
 <strong>

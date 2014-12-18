@@ -59,86 +59,76 @@
 <div id="main" class="container">
 <div class="five columns sidebarhome aspages">
 <div class="sidinside">
-
-<div class="widget">
-<div class="h4bg"><h4>照片寄语</h4></div>
-<div class="clear"></div>
-<p>
+	<div class="widget">
+	<div class="h4bg"><h4>照片寄语</h4></div>
+	<div class="clear"></div>
+	<p>
 &nbsp&nbsp我们都想记录自己的点滴，刻录自己的每一个脚印，时间逝去，带不走的是我们的回忆，带不走是我们记忆中的美好。在这里，有很多懂得感悟生活的人用
 照片刻录了他们的脚印，让我们一起看看他们的记录的美好吧。
 </p>
 </div>
 </div>
-
 </div>
 <div class="eleven columns">
-<div class="recentitems">
-<div class="four columns mnm mnm1">
-<a href="#" class="glavni"><img width="150" height="100" title="4746951625_cd20f1e0c4_z" alt="4746951625_cd20f1e0c4_z" class="attachment-portfoliohome wp-post-image" src="./images/paris.png" /></a>
-<h3><a href="./portfolio-single.html">巴黎记忆</a></h3>
-<p>by:&nbsp&nbsp陌生人</p>
+<?php
+	require('mysql.php');
+	$path = './tourimg/';
+	$page_size=9;
+	$query="select count(*) from Picture";
+    $result = @mysqli_query($dbc,$query);
+    $row= mysqli_fetch_array($result);
+	$message_count=$row[0];
+	 $page_count=ceil($message_count/$page_size);
+    $offset=($page-1)*$page_size;
+    $result=@mysqli_query($dbc,"select * from Picture limit $offset,$page_size");
+    while($row = mysqli_fetch_row($result))
+    {
+		$filepath=$path.$row[2].'/'.$row[0].'.png';
+		$q = "select * from users where ID = '$row[2]'";
+		$r = @mysqli_query($dbc,$q);
+		$rx = mysqli_fetch_array($r);
+		$name = $rx['name'];
+		echo '<div class="recentitems">
+		<div class="four columns mnm mnm1">';
+		echo '<a href="#" class="glavni"><img width="150" height="100" title="4746951625_cd20f1e0c4_z" alt="4746951625_cd20f1e0c4_z" class="attachment-portfoliohome wp-post-image" src="'.$filepath.'" /></a>';
+		if($ID==$row[2]){
+		echo '<h3><a href="./person.html?">'.$row[1].'</a></h3>
+		<p>by:&nbsp&nbsp'.$name.'</p>
+		</div>
+		</div> ';}
+		else{
+		echo '<h3><a href="./other.html? othername='.$name.'">'.$row[1].'</a></h3>
+		<p>by:&nbsp&nbsp'.$name.'</p>
+		</div>
+		</div> ';}
+	}
+?>
 </div>
-
-<div class="four columns mnm mnm2">
-<a href="#" class="glavni"><img width="150" height="100" title="2876370429_5fa4566a9c_b" alt="2876370429_5fa4566a9c_b" class="attachment-portfoliohome wp-post-image" src="./images/mtl.png" /></a>
-<h3><a href="./portfolio-single.html">幸福摩天轮</a></h3>
-<p>by:&nbsp&nbspAaron</p>
-</div>
-
-<div class="four columns mnm mnm3">
-<a href="#" class="glavni"><img width="150" height="100" title="2533740559_2086c0b58b_z" alt="2533740559_2086c0b58b_z" class="attachment-portfoliohome wp-post-image" src="./images/sun.png" /></a>
-<h3><a href="./portfolio-single.html">夕阳下的自己</a></h3>
-<p>by:&nbsp&nbsp最北的极光</p>
-</div>
-
-<div class="four columns mnm mnm4">
-<a href="#" class="glavni"><img width="150" height="100" title="2871105756_7ff68cfe42_b" alt="2871105756_7ff68cfe42_b" class="attachment-portfoliohome wp-post-image" src="./images/county.png" /></a>
-<h3><a href="./portfolio-single.html"  >宁静的山野<br /></a></h3>
-<p>by:&nbsp&nbsp独自去旅行</p>
-</div>
-
-<div class="four columns mnm mnm5">
-<a href="#" class="glavni"><img width="150" height="100" title="4746951625_cd20f1e0c4_z" alt="4746951625_cd20f1e0c4_z" class="attachment-portfoliohome wp-post-image" src="./images/pic5.png" /></a>
-<h3><a href="./portfolio-single.html">海岸的记忆</a></h3>
-<p>by:&nbsp&nbsp上世纪的童话</p>
-</div>
-
-<div class="four columns mnm mnm2">
-<a href="#" class="glavni"><img width="150" height="100" title="2876370429_5fa4566a9c_b" alt="2876370429_5fa4566a9c_b" class="attachment-portfoliohome wp-post-image" src="./images/pic6.png" /></a>
-<h3><a href="./portfolio-single.html">最美的民族</a></h3>
-<p>by:&nbsp&nbsp背包的背包</p>
-</div>
-
-<div class="four columns mnm mnm3">
-<a href="#" class="glavni"><img width="150" height="100" title="2533740559_2086c0b58b_z" alt="2533740559_2086c0b58b_z" class="attachment-portfoliohome wp-post-image" src="./images/pic7.png" /></a>
-<h3><a href="./portfolio-single.html">背包徒行</a></h3>
-<p>by:&nbsp&nbsp小情绪</p>
-</div>
-
-<div class="four columns mnm mnm4">
-<a href="#" class="glavni"><img width="150" height="100" title="2871105756_7ff68cfe42_b" alt="2871105756_7ff68cfe42_b" class="attachment-portfoliohome wp-post-image" src="./images/pic8.png" /></a>
-<h3><a href="./portfolio-single.html" >狂野的沙漠</a></h3>
-<p>by:&nbsp&nbsp等待荷西</p>
-</div>
-
-<div class="four columns mnm mnm4">
-<a href="#" class="glavni"><img width="150" height="100" title="2871105756_7ff68cfe42_b" alt="2871105756_7ff68cfe42_b" class="attachment-portfoliohome wp-post-image" src="./images/pic9.png" /></a>
-<h3><a href="./portfolio-single.html" >青春的旅途</a></h3>
-<p>by:&nbsp&nbsp路过青春</p>
-</div>
-
-<div class="four columns mnm mnm4">
-<a href="#" class="glavni"><img width="150" height="100" title="2871105756_7ff68cfe42_b" alt="2871105756_7ff68cfe42_b" class="attachment-portfoliohome wp-post-image" src="./images/pic10.png" /></a>
-<h3><a href="./portfolio-single.html" >欧美风情</a></h3>
-<p>by:&nbsp&nbsp一缕晨光</p>
-</div>
-
-</div>
-
-<div class="navigate">
-<a href="#" class="rarr">Next Posts &rarr;</a>
-</div>
-</div>
+<?php
+if($page==1)
+{
+	$pagenow = $page+1;
+echo '<div class="navigate">
+	<a href="./pic.html?page='.$pagenow.'" class="rarr">下一页 &rarr;</a>
+	</div>';
+}
+elseif(($page+1)*9>$message_count)
+{
+	$pagenow = $page-1;
+	echo '<div class="navigate">
+	<a href="./pic.html?page='.$pagenow.'" class="larr">&larr; 上一页</a>
+</div>';
+}
+else
+{
+$pagenow1 = $page-1;
+$pagenow = $page+1;
+echo'<div class="navigate">
+<a href="./pic.html?page='.$pagenow1.'" class="larr">&larr; 上一页</a>
+<a href="./pic.html?page='.$pagenow.'" class="rarr">下一页 &rarr;</a>
+</div>';
+}
+?>
 
 </div>
 

@@ -1,4 +1,3 @@
-
 <?php
 	session_start();
 	if(!isset($_SESSION['ID']))
@@ -60,79 +59,124 @@
 <!-- end of header -->
 <div id="main" class="container">
 <div class="eleven columns">
+<?php
+	error_reporting(0);
+	require('mysql.php');
+	$ID = $_SESSION['ID'];
+	$q = "SELECT * FROM PI WHERE ID = '$ID'";
+	$r = @mysqli_query($dbc,$q);
+	if($r){
+	$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+	$lovespace = $row['loveplace'];
+	$file =file( "$lovespace" );
+	$aa = array();
+	foreach($file as $value)
+	{
+		$aa[] = $value;
+	}
+	}
+?>
+<?php
+	if($page=="")
+	{
+    $page=1;
+	}
+	$query="select count(*) from Place";
+    $result = @mysqli_query($dbc,$query);
+	$page_size=2;
+    $row= mysqli_fetch_array($result);
+	$message_count=$row[0];
+	 $page_count=ceil($message_count/$page_size);
+    $offset=($page-1)*$page_size;
+    $result=@mysqli_query($dbc,"select * from Place limit $offset,$page_size");
+	while($row = mysqli_fetch_row($result))
+    {
+	$q="select * from PlaceD where name='$row[0]'";
+    $r = @mysqli_query($dbc,$q);
+    $ro= mysqli_fetch_array($r);
+	$action = $ro['action'];
+	$author = $ro['author'];
+	echo '<div class="blogpost">
+		<a href="#" class="featuredimg"><img src="'.$row[1].'" alt="post" /></a>
+		<div class="excerpt">
+		<h3><a href="#">'.$row[0].'&nbsp&nbsp</a></h3>
+		<div class="whos">
+	<div><span>地理位置:&nbsp;</span> '.$action.'</div>
+	<div><span>推荐人:&nbsp;</span> <a href="#">'.$author.'</a></div>
+	<br/>
+	<br/>
+	<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span>'; 
+	?>
+	<?php
+	$i = 0;
+	foreach($aa as $value)
+	{
+	$value = trim($value);
+		if($value == $row[0])
+		{
+			$i=1;
+			break;
+		}
+	}
+	if($i==1){
+	?>
+	<a  class="buttongreen" href="#"><h4>已赞</h4></a></div>
 
-<div class="blogpost">
-<a href="#" class="featuredimg"><img src="./images/kaini.png" alt="post" /></a>
-<div class="excerpt">
-<h3><a href="#">卡尼岛&nbsp&nbsp(Kani Island)</a></h3>
-<div class="whos">
-<div><span>地理位置:&nbsp;</span> 马尔代夫的马累北环礁</div>
-<div><span>推荐人:&nbsp;</span> <a href="#">Jack</a></div>
-<br/>
-<br/>
-<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span> <a  class="buttongreen" href="#"><h4>赞一个</h4></a></div>
-</div>
-<div class="excerpt2"><p>
-&nbsp&nbsp&nbsp&nbsp卡尼岛，印度洋上的“绿洲花园”，岛上的一切都显得简单、自然，所有的世俗烦恼在
-这清新如微风的感觉中消失得无踪影，安详与宁静也将心情洗涤如新。在卡尼岛上，沙滩、海水、棕榈树都带
-着一丝与世隔绝的超脱感，仿佛没有沾染到一丝人世间的气息。在这里，可以静静地坐在海边的吊椅上，
-看海浪的起伏，任凭海风从双肩掠过，带去丝丝的失落，又唤回一些年轻的想象。
-　<br>&nbsp&nbsp&nbsp&nbsp卡尼岛距首都马累20公里。卡尼岛人纯朴、好客...
-<a href="#">更多信息</a>
-</p>
- </div>
-</div>
+	<?php
+	}
+	else{
+	echo '<form method="post" >
+	<input type="hidden" name="place" value="'.$row[0].'">
+	<input type="submit" class="buttongreen" value="赞一个"></div>
+	</form>';
+	}
 
-</div>
-<div class="blogpost">
-<a href="#" class="featuredimg"><img src="./images/yjj.png" height="250" width="400" alt="post" /></a>
-<div class="excerpt">
-<h3><a href="#">袁家界</a></h3>
-<div class="whos">
-<div><span>地理位置:&nbsp;</span> 湖南省张家界市砂刀沟北麓</div>
-<div><span>推荐人:&nbsp;</span> <a href="#">陆晓曼</a></div>
-<br/>
-<br/>
-<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span> <a  class="buttongreen" href="#"><h4>赞一个</h4></a></div>
-</div>
-<div class="excerpt2">
-&nbsp&nbsp&nbsp&nbsp袁家界位于张家界森林公园北部，是镶嵌在武陵源核心景区的一颗明珠。
-袁家界风景以雄、奇、险、峻着称，在十多华里的环山游道上，沿途景色美不胜数。
-　<br/>&nbsp&nbsp&nbsp&nbsp袁家界位于杉刀沟北麓，是以石英岩为主构成的一座巨大而较平缓的山岳，
-是张家界公园又一处风景集中地。与世界上最美丽的峡谷金鞭溪一衣带水，东接索溪峪，南眺鹞子寨，西
-望黄石寨，北靠天子山，总面积约1200公顷，平均海拔1074米。站在袁家界景区的观景台上，三千奇峰尽收
-眼底，雄险秀野，神态各异。峡谷深处，千百根石峰石柱奇伟突立。峻峭之石，如英武将帅；嵯峨之峰...
- <a href="#">更多信息</a>
-</div>
-</div>
+	echo '</div>
+	<div class="excerpt2">';
+	$p = $row[2];
+	$file = file($p);
+		$i = 0;
+		foreach($file as $value)
+		{
+			if($i<2)
+			{
+				echo $value;
+			}
+			$i =$i+1;
+		}
+	echo '<a href="#">更多信息</a>
+	</p>
+	</div>
+	</div>
+	</div>';
+}
+?>
 
-</div>
-<div class="blogpost">
-<a href="#" class="featuredimg"><img src="./images/NZ.png" alt="post" /></a>
-<div class="excerpt">
-<h3><a href="#">新西兰·奥克兰:&nbsp&nbsp(Auckland)</a></h3>
-<div class="whos">
-<div><span>地理位置:&nbsp;</span> 新西兰北岛</div>
-<div><span>推荐人:&nbsp;</span> <a href="#">JR Smith</a></div>
-<br/>
-<br/>
-<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span> <a  class="buttongreen" href="#"><h4>赞一个</h4></a></div>
-</div>
-<div class="excerpt2">
-&nbsp&nbsp&nbsp&nbsp奥克兰（Auckland）位于新西兰北岛，依海而建，景色优美，是新西兰第一大城市。
-奥克兰四周被海洋和火山环抱，有美丽的港湾和壮观的大桥，这里吸引了
-世界各国的帆船爱好者，奥克兰是全世界拥有私人船只比率最高的城市，
-有“帆船之都”的美誉（每年1月的帆船竞赛场面十分壮观）。 ...
- <a href="#">更多信息</a>
-</div>
-</div>
-
-</div>
-
-<div class="navigate">
-<a href="#" class="larr">&larr; 上一页</a>
-<a href="#" class="rarr">下一页 &rarr;</a>
-</div>
+<?php
+if($page==1)
+{
+	$pagenow = $page+1;
+echo '<div class="navigate">
+	<a href="./find.html?page='.$pagenow.'" class="rarr">下一页 &rarr;</a>
+	</div>';
+}
+elseif(($page+1)*9>$message_count)
+{
+	$pagenow = $page-1;
+	echo '<div class="navigate">
+	<a href="./find.html?page='.$pagenow.'" class="larr">&larr; 上一页</a>
+</div>';
+}
+else
+{
+$pagenow1 = $page-1;
+$pagenow = $page+1;
+echo'<div class="navigate">
+<a href="./find.html?page='.$pagenow1.'" class="larr">&larr; 上一页</a>
+<a href="./find.html?page='.$pagenow.'" class="rarr">下一页 &rarr;</a>
+</div>';
+}
+?>
 
 </div>
 

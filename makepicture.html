@@ -66,15 +66,24 @@ $ID = $_SESSION['ID'];
 <div align="center" style="width:50%; height:300px; font-size:13px">
 <h3>上传图片预览</h3>
 <form name="frm" method="post" enctype="multipart/form-data">
- <input name='upfile' type='file' /></br>
- <input name="btn" type="submit" value="上传" /><br />
+	<div class="forty">
+	<input name='upfile' type='file' /></br>
+	</div>
+	<div class="forty">
+	<input name="btn" type="submit" value="上传" />
+	</div>
+	<label><strong>图片介绍:</strong></label>
+	<textarea id="fmessage" name="fmessage"></textarea>
+ <br />
 </form>
 <?php
 //全局变量
 $max_size='500000'; 
-$upfile= './txt/tour/'.$ID.'/';
+$upfile= './tourimg/'.$ID.'/';
    if($_SERVER['REQUEST_METHOD']=='POST'){ 
    $file=$_FILES['upfile'];
+   $fmessage = $_POST['fmessage'];
+   $date = date("YmdHms");
      if(!is_uploaded_file($file['tmp_name'])){ 
     echo "<font color='#FF0000'>文件不存在！</font>";
     exit;
@@ -90,18 +99,20 @@ $upfile= './txt/tour/'.$ID.'/';
  
     $imageSize=getimagesize($file['tmp_name']);
    $img=$imageSize[0].'*'.$imageSize[1];
-   $fname=$file['name'];
-   $ftype=explode('.',$fname);
-   $picName=$upfile.$_SESSION['name'].$fname;
+   $picName=$upfile.$date.'.png';
    if(!move_uploaded_file($file['tmp_name'],$picName)){ 
     echo "<font color='#FF0000'>移动文件出错！</font>";
     exit;
     }
    else{
+	$q = "insert into Picture values('$date','$fmessage','$ID')";
+	$r = @mysqli_query($dbc,$q);
+	if($r){
     echo "<font color='#FF0000'>图片文件上传成功！</font><br/>";
     echo "图片预览：<br><div style=' 1px solid; width:200px;height:200px'>
-    <img src=\"".$picName."\" width=200px height=200px>".$fname."</div>";
+    <img src=\"".$picName."\" width=200px height=200px>".$date."</div>";
     }
+	}
       }
 ?>
 
