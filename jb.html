@@ -1,3 +1,11 @@
+<?php
+	session_start();
+	if(!isset($_SESSION['manageID']))
+	{
+		require('loginfunction2.php');
+		redirect_user('manage.html');
+	}
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> </html><![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> </html><![endif]-->
@@ -23,7 +31,7 @@
 	<![endif]-->
 	<!-- Favicons================================================== -->
 
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+                <script type="text/javascript" src="./js/jquery.1.70.js"></script>
         <script type="text/javascript" src="./js/jquery.eislideshow.js"></script>
         <script type="text/javascript" src="./js/jquery.easing.1.3.js"></script>
         <script type="text/javascript" src="./js/jquery.tweet.js"></script>		
@@ -35,74 +43,91 @@
 <div class="Catalog">
 <img src="./images/logo.png" alt="" class="logo"  height="50" width="70"/>
 <ul class="menu">
-<li><a href="./login.html">会员登录</a></li>
-<li><a href="./#.html"><a/>新用户注册</li>
+<li><a href="./ManagePoint.html">首页</a></li>
+<li><a href="./logout1.php">退出</a></li>
 </ul>
 </div>
 </div>
 </div>
 <div id="main" class="container">
-<div class="sixteen columns">
 <div class="contactform">
-<div class="six columns">
-<h3>注册须知:</h3>
-<strong>1.注册用户名长度不可长于10字符&nbsp</strong> 
-<br />
-<strong>2.密码长度必须大于8位且小于12位;</strong> 
-<br />
-<strong>3.填写详细信息可以帮助你找到快速找到圈子！</strong>
-<br />
-<strong>4.加*号为必填项！</strong></p>
-
-</div>
-
-</div>
-<div id="main" class="container">
-<div class="contactform">
+<div class="ten columns">
 <div class="pad">
-<h1>
-<strong>马上注册</strong>
-</h1>
+<h3>
+修改景点信息
+</h3>
+<?php
+require('mysql.php');
+if($_SERVER['REQUEST_METHOD']=='POST'){
+$a = $_POST['fname'];
+$b = $_POST['fmail'];
+$c = $_POST['fmessage'];
+$name = $_POST['name'];
 
-<form action="login.php" method="post" id="formc" >
+$query="update placed set author='$a' and action='$b' where name='$name'";
+$result = @mysqli_query($dbc,$query);
+$query="select txt from Place where name='$name'";
+$result = @mysqli_query($dbc,$query);
+$row= mysqli_fetch_array($result);
+$num=$row[0];
+$filec = file("$num");
+$file = fopen("$num","w");
+fwrite($file,$c);
+fclose($file);
+echo '<form action="jb.html" method="post" id="formc" >
 <div class="forty">
-<label>*&nbsp会员名:</label>
-<input type="text" name="fname" id="fname" value="" />
+<label>推荐人:</label>
+<input type="text" name="fname" id="fname" value="'.$a.'" />
 </div>
+<input type="hidden" name="name" value="'.$name.'">
 <div class="forty">
-<label>*&nbspEmail:</label>
-<input type="text" name="fmail" id="fname" value="" />
+<label>景点地点:</label>
+<input type="text" name="fmail" id="fname" value="'.$b.'" />
 </div>
-<div class="forty">
-<label>*&nbsp密码:</label>
-<input type="text" name="fnima" id="fname" value="" />
-</div>
-<div class="forty">
-<label>*&nbsp确认密码：</label>
-<input type="text" name="fnimat" id="fname" value="" />
-</div>
-<div class="forty">
-<label>&nbspAge：</label>
-<input type="text" name="fage" id="fname" value="" />
-</div>
-<div class="forty">
-<label>&nbsp性别：</label>
-<input type="text" name="fsex" id="fname" value="" />
-</div>
-<div class="forty">
-<label>&nbsp学校：</label>
-<input type="text" name="fsch" id="fname" value="" />
-</div>
-<div class="forty">
-<label>&nbsp联系方式：</label>
-<input type="text" name="fphone" id="fname" value="" />
-</div>
-<label>&nbsp</label>
-<input type="submit" class="buttongreen" id="fsubmit" name="fsubmit" value="Finish" />
-</form>
+<label>景点介绍</label>
+<textarea id="fmessage" name="fmessage" style="width: 600px; height: 400px; background-color:#FFFFFF; font-size:18px; color:#000">';
+foreach($filec as $value)
+{	
+	echo $value;
+}
+echo '</textarea>
+<input type="submit" class="buttongreen" id="fsubmit" name="fsubmit" value="Submit" />
+</form>';
+}
+else
+{
+$query="select txt from Place where name='$name'";
+$result = @mysqli_query($dbc,$query);
+$row= mysqli_fetch_array($result);
+$num=$row[0];
 
+$filec = file("$num");
+$query="select * from Placed where name='$name'";
+$result = @mysqli_query($dbc,$query);
+$row= mysqli_fetch_array($result);
+echo '<form action="jb.html" method="post" id="formc" >
+<div class="forty">
+<label>推荐人:</label>
+<input type="text" name="fname" id="fname" value="'.$row[2].'" />
 </div>
-
+<input type="hidden" name="name" value="'.$name.'">
+<div class="forty">
+<label>景点地点:</label>
+<input type="text" name="fmail" id="fname" value="'.$row[1].'" />
+</div>
+<label>景点介绍</label>
+<textarea id="fmessage" name="fmessage" style="width: 600px; height: 400px; background-color:#FFFFFF; font-size:18px; color:#000">';
+foreach($filec as $value)
+{	
+	echo $value;
+}
+echo '</textarea>
+<input type="submit" class="buttongreen" id="fsubmit" name="fsubmit" value="Submit" />
+</form>';
+}
+?>
+</div>
+</div>
 </div>
 </div>
 <!-- end of contactform wrap -->

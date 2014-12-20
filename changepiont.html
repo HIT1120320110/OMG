@@ -1,9 +1,9 @@
 <?php
 	session_start();
-	if(!isset($_SESSION['ID']))
+	if(!isset($_SESSION['manageID']))
 	{
-		require('loginfunction.php');
-		redirect_user('login.html');
+		require('loginfunction2.php');
+		redirect_user('manage.html');
 	}
 ?>
 <!DOCTYPE html>
@@ -14,8 +14,8 @@
 <head>
 	<meta charset="utf-8" />
 	<title>目的地</title>
-	<meta name="description" content="" />
-	<meta name="author" content="" />
+	<meta name="description" content="Tour Pal Home" />
+	<meta name="author" content="solojoe" />
 	<!-- Mobile Specific Metas
   ================================================== -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
@@ -29,13 +29,12 @@
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<!-- Favicons
-	================================================== -->
+	<!-- Favicons================================================== -->
 
-              <script type="text/javascript" src="./js/jquery.1.70.js"></script>
+                <script type="text/javascript" src="./js/jquery.1.70.js"></script>
         <script type="text/javascript" src="./js/jquery.eislideshow.js"></script>
         <script type="text/javascript" src="./js/jquery.easing.1.3.js"></script>
-		<script type="text/javascript" src="./js/jquery.tweet.js"></script>	
+        <script type="text/javascript" src="./js/jquery.tweet.js"></script>		
         <script type="text/javascript" src="./js/custom.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 <body>
@@ -44,77 +43,57 @@
 <div class="Catalog">
 <img src="./images/logo.png" alt="" class="logo"  height="50" width="70"/>
 <ul class="menu">
-<li><a href="./index.html">首页</a></li>
-<li><a href="./find.html">寻找景点</a></li>
-<li><a href="./person.html">个人中心</a></li>
-<li><a href="./BBS.html">BBS论坛</a></li>
-<li><a href="./team.html">我们的团队</li>
-<li><a href="./contact.html">联系我们</a></li>
-<li><a href="./logout.php">退出</a></li>
+<li><a href="./ManagePoint.html">首页</a></li>
+<li><a href="./logout1.php">退出</a></li>
 </ul>
 </div>
 </div>
 </div>
-<!-- end of header -->
-<?php
-require('mysql.php');
-$ID = $_SESSION['ID'];
-?>
 <div id="main" class="container">
-<div class="contactform">
-<div class="ten columns">
-<div align="center" style="width:50%; height:300px; font-size:13px">
-<h3>上传图片预览</h3>
-<form name="frm" method="post" enctype="multipart/form-data">
- <input name='upfile' type='file' /></br>
- <input name="btn" type="submit" value="上传" /><br />
-</form>
+<div class="five columns sidebarhome aspages">
+<div class="sidinside">
+<div class="widget">
+<div class="h4bg"><h4>修改景点</h4></div>
 <?php
-//全局变量
-$max_size='500000'; 
-$upfile= './image/';
-   if($_SERVER['REQUEST_METHOD']=='POST'){ 
-   $file=$_FILES['upfile'];
-     if(!is_uploaded_file($file['tmp_name'])){ 
-    echo "<font color='#FF0000'>文件不存在！</font>";
-    exit;
-    }
-  
-  if($file['size']>$max_size){ 
-    echo "<font color='#FF0000'>上传文件太大！</font>";
-    exit;
-   }
-    if(!file_exists($upfile)){ 
-   mkdir($upfile,0777,true);
-   }
- 
-    $imageSize=getimagesize($file['tmp_name']);
-   $img=$imageSize[0].'*'.$imageSize[1];
-   $fname=$file['name'];
-   $ftype=explode('.',$fname);
-   $picName=$upfile.$_SESSION['name'].$fname;
-   if(!move_uploaded_file($file['tmp_name'],$picName)){ 
-    echo "<font color='#FF0000'>移动文件出错！</font>";
-    exit;
-    }
-   else{
-    $q = "update PI set img = '$picName' where ID = '$ID' ";
-	$r = @mysqli_query($dbc,$q);
-    echo "<font color='#FF0000'>图片文件上传成功！</font><br/>";
-    echo "图片预览：<br><div style=' 1px solid; width:200px;height:200px'>
-    <img src=\"".$picName."\" width=200px height=200px>".$fname."</div>";
-    }
-      }
+	require('mysql.php');
+	if($_SERVER['REQUEST_METHOD']=='POST'){
+	$a = $_POST['sinput'];
+	$query="select name from Place where name='$a'";
+    $result = @mysqli_query($dbc,$query);
+    $row= mysqli_fetch_array($result);
+	$num=$row[0];
+	if($num==$a){
+	echo"<div  class='pad' style='color:#000'><h2>";
+	echo '<a href="./jb.html? name='.$a.'" >';
+	echo '修改基本信息';
+	echo "</a></h2></div>";
+	echo"<div  class='pad' style='color:#000'><h2>";
+	echo '<a href="./lx.html? name='.$a.'" >';
+	echo '修改路线';
+	echo "</a></h2></div>";
+	echo"<div  class='pad' style='color:#000'><h2>";
+	echo '<a href="./pj.html? name='.$a.'" >';
+	echo '修改评价';
+	echo "</a></h2></div>";
+	}
+	else{
+		echo"<div  class='pad' style='color:#000'><h2>";
+	echo '没找到';
+	echo "</h2></div>";
+	}
+	}
 ?>
-
-</div>
-</div>
 </div>
 </div>
 <div class = "sidinside">
-<a class="buttongreen" href="person.html">返回</a>
+<a class="buttongreen" href="ManagePoint.html">返回</a>
 </div>
-<!-- end of main home -->
+</div>
+
+</div>
+<!-- end of contactform wrap -->
+
+
 <div class="container">
 <div class="sixteen columns">
 觉得网站不错？分享给其他人吧！！！
@@ -129,6 +108,7 @@ $upfile= './image/';
 
 </div>
 </div>
+
 <!-- end funter -->
 </body>
 </html>

@@ -146,14 +146,16 @@ else{
 <div class="footerstrip">
 <div class="container">
 <div class="sixteen columns">
-share to others
+觉得网站不错？分享给其他人吧！！！
+<script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>
 <ul class="socials">
 <li> share by</li>
-<li class="fb"><a href="#"><img src="./images/sina1.png" height="20" width="20" alt="sina" /></a></li>
-<li class="vimeo"><a href="#"><img src="./images/QQ.png" height="20" width="20" alt="QQ" /></a></li>
-<li class="tw"><a href="#"><img src="./images/RR.png" height="20" width="20" alt="renren" /></a></li>
-<li class="flickr"><a href="#"><img src="./images/flickr.png" alt="flickr" /></a></li>
+<li class="fb"><a class="jiathis_button_tsina"><img src="./images/sina1.png" height="20" width="20" alt="sina" /></a></li>
+<li class="vimeo"><a class="jiathis_button_qzone"><img src="./images/QQ.png" height="20" width="20" alt="QQ" /></a></li>
+<li class="tw"><a class="jiathis_button_renren"><img src="./images/RR.png" height="20" width="20" alt="renren" /></a></li>
+<li class="flickr"><a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"><img src="./images/flickr.png" alt="flickr" /></a></li>
 </ul>
+
 </div>
 </div>
 </div>

@@ -1,9 +1,9 @@
 <?php
 	session_start();
-	if(!isset($_SESSION['ID']))
+	if(!isset($_SESSION['manageID']))
 	{
-		require('loginfunction.php');
-		redirect_user('login.html');
+		require('loginfunction2.php');
+		redirect_user('manage.html');
 	}
 ?>
 <!DOCTYPE html>
@@ -13,7 +13,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8" />
-	<title>目的地</title>
+	<title>register</title>
 	<meta name="description" content="Tour Pal Home" />
 	<meta name="author" content="solojoe" />
 	<!-- Mobile Specific Metas
@@ -43,81 +43,101 @@
 <div class="Catalog">
 <img src="./images/logo.png" alt="" class="logo"  height="50" width="70"/>
 <ul class="menu">
-<li><a href="./index.html">首页</a></li>
-<li><a href="./find.html">寻找景点</a></li>
-<li><a href="./person.html">个人中心</a>
-</li>
-<li><a href="./BBS.html">BBS论坛</a></li>
-<li><a href="./team.html">我们的团队</a></li>
-<li><a href="./contact.html"></a>联系我们</li>
-<li><a href="./logout.php">退出</a></li>
-</ul>
+<li><a href="./ManagePoint.html">首页</a></li>
+<li><a href="./logout1.php">退出</a></li>
 </div>
 </div>
 </div>
-<div id="main" class="container">
-<div class="sixteen columns">
-<div class="contactform">
-<div class="six columns">
-<h3>详细联系方式:</h3>
-<p>
-欢迎随时联系我们，一起维护属于我的网站:<br /></p>
-<p>
-<strong>电话号码:&nbsp;</strong>  &nbsp15665402802
-<br />
-<strong>联系地址:&nbsp;</strong> 哈尔滨工业大学信安一班
-<br />
-<strong>github:&nbsp;</strong> github.solojoe.com</p>
-<div class="contactsocial">
-<h3>我们的圈子</h3>
-<p>你也可以通过我们的其他主页关注我们的最新信息</p>
-<p class="psocial">
-<a href="#"><img src="./images/QQ.png" height="30" width="30" alt="	qq" /></a>
-<a href="#"><img src="./images/RR.png" height="30" width="30"  alt="RenRen" /></a>
-<a href="#"><img src="./images/sina1.png" height="30" width="30" alt="sina" /></a>
+<?php
+	echo '<div id="main" class="container">
+		<div class="sixteen columns">
+		<div class="contactform">
+	<div class="six columns"> 
+	<h3></h3>
+	<p> ';
+if($_SERVER['REQUEST_METHOD'] == 'POST')
+{
+	$errors = array();
+	if(empty($_POST['fname'])){
+		$errors[] = 'you forget to input name!';
+	}else{
+		$name = trim($_POST['fname']);
+	}
+	
+	if(empty($_POST['fmail'])){
+		$errors[] = 'you forget to input action';
+	}else{
+		$action = trim($_POST['fmail']);
+	}
+	
+	if(empty($_POST['fweb'])){
+		$errors[] = 'you forget to input commander!';
+	}else{
+		$author = trim($_POST['fweb']);
+	}
+	
+	if(!empty($_POST['fmessage'])){
+		$message = trim($_POST['fmessage']);
+	}
+	else{ $message= "";}
+
+	if(empty($errors)){
+		require('mysql.php');
+		$q = "insert into placed values ( '$name', '$action', '$author', '1')";
+		$r = @mysqli_query($dbc, $q);
+		if($r)
+		{
+			$date = date("YmdHms");
+			$img = "./images/h6.png";
+			$love = './txt/'.$date.'.txt';
+			$file = fopen("$love","a");
+			fwrite($file,$message);
+			fclose($file);
+			$lx = './txt/'.$date.'lx.txt';
+			$file = fopen("$lx","a");
+			fwrite($file,"\n");
+			fclose($file);
+			$PJ = './txt/'.$date.'PJ.txt';
+			$file = fopen("$PJ","a");
+			fwrite($file,"\n");
+			fclose($file);
+			$q1 = "insert into place values ('$name', '$img', '$love',2, '$lx', '$PJ')";
+			$r1 = @mysqli_query($dbc,$q1);
+			$date = date("Hms");
+			$txt = './txt/'.$date.'love.txt';
+			$file = fopen("$txt","a");
+			fwrite($file,"/r\n");
+			fclose($file);
+			$q = "insert into placelove values('$name','$txt')";
+			$r = @mysqli_query($dbc,$q);
+			echo '<p><a href="./makepic.html?name='.$name.'" class="buttongreen">插入图片</a></p>';
+		}
+		else{
+			echo '<strong>i am sorry that is  a system error<br/></strong>';
+			echo '<p><a href="./ManagePoint.html" class="buttongreen">back</a></p>';
+		}
+		mysqli_close($dbc);
+		exit();
+	}
+	else{
+		foreach($errors as $mes)
+		{
+		echo "<strong>-$mes<br /></strong>";
+		}
+		echo '<p><a href="./ManagePoint.html" class="buttongreen">back</a></p>';
+	}
+}
+else{
+	echo '<strong>please try again!<br/></strong>';
+	echo '<p><a href="./ManagePoint.html" class="buttongreen">back</a></p>';
+}
+?>
 </p>
 </div>
-
-</div>
-
-</div>
-<div id="main" class="container">
-<div class="contactform">
-<div class="ten columns">
-<div class="pad">
-<h3>
-我们的意见箱
-</h3>
-
-<form action="advice" method="post" id="formc" >
-<div class="forty">
-<label>姓名:</label>
-<input type="text" name="fname" id="fname" value="" />
-</div>
-<div class="forty">
-<label>Email:</label>
-<input type="text" name="fmail" id="fname" value="" />
-</div>
-<div class="forty">
-<label>你的主页:</label>
-<input type="text" name="fweb" id="fname" value="" />
-</div>
-<div class="forty">
-<label>请输入验证码：&nbsp&nbsp2 + 2 = ?</label>
-<input type="text" name="fsub" id="fname" value="" />
-</div>
-<label>您的意见</label>
-<textarea id="fmessage" name="fmessage"></textarea>
-<input type="submit" class="buttongreen" id="fsubmit" name="fsubmit" value="Submit" />
-</form>
-
 </div>
 </div>
 </div>
-</div>
-<!-- end of contactform wrap -->
-
-
+<div class="footerstrip">
 <div class="container">
 <div class="sixteen columns">
 觉得网站不错？分享给其他人吧！！！
@@ -132,7 +152,7 @@
 
 </div>
 </div>
-
+</div>
 <!-- end funter -->
 </body>
 </html>

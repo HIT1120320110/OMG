@@ -1,9 +1,9 @@
 <?php
 	session_start();
-	if(!isset($_SESSION['ID']))
+	if(!isset($_SESSION['manageID']))
 	{
-		require('loginfunction.php');
-		redirect_user('login.html');
+		require('loginfunction2.php');
+		redirect_user('manage.html');
 	}
 ?>
 <!DOCTYPE html>
@@ -44,21 +44,14 @@
 <div class="Catalog">
 <img src="./images/logo.png" alt="" class="logo"  height="50" width="70"/>
 <ul class="menu">
-<li><a href="./index.html">首页</a></li>
-<li><a href="./find.html">寻找景点</a></li>
-<li><a href="./person.html">个人中心</a></li>
-<li><a href="./BBS.html">BBS论坛</a></li>
-<li><a href="./team.html">我们的团队</li>
-<li><a href="./contact.html">联系我们</a></li>
-<li><a href="./logout.php">退出</a></li>
-</ul>
+<li><a href="./ManagePoint.html">首页</a></li>
+<li><a href="./logout1.php">退出</a></li>
 </div>
 </div>
 </div>
 <!-- end of header -->
 <?php
 require('mysql.php');
-$ID = $_SESSION['ID'];
 ?>
 <div id="main" class="container">
 <div class="contactform">
@@ -66,15 +59,21 @@ $ID = $_SESSION['ID'];
 <div align="center" style="width:50%; height:300px; font-size:13px">
 <h3>上传图片预览</h3>
 <form name="frm" method="post" enctype="multipart/form-data">
- <input name='upfile' type='file' /></br>
- <input name="btn" type="submit" value="上传" /><br />
+	<div class="forty">
+	<input name='upfile' type='file' /></br>
+	</div>
+	<div class="forty">
+	<input name="btn" type="submit" value="上传" />
+	</div>
+ <br />
 </form>
 <?php
 //全局变量
 $max_size='500000'; 
-$upfile= './image/';
+$upfile= './images/';
    if($_SERVER['REQUEST_METHOD']=='POST'){ 
    $file=$_FILES['upfile'];
+   $date = date("YmdHms");
      if(!is_uploaded_file($file['tmp_name'])){ 
     echo "<font color='#FF0000'>文件不存在！</font>";
     exit;
@@ -90,20 +89,20 @@ $upfile= './image/';
  
     $imageSize=getimagesize($file['tmp_name']);
    $img=$imageSize[0].'*'.$imageSize[1];
-   $fname=$file['name'];
-   $ftype=explode('.',$fname);
-   $picName=$upfile.$_SESSION['name'].$fname;
+   $picName=$upfile.$date.'.png';
    if(!move_uploaded_file($file['tmp_name'],$picName)){ 
     echo "<font color='#FF0000'>移动文件出错！</font>";
     exit;
     }
    else{
-    $q = "update PI set img = '$picName' where ID = '$ID' ";
+	$q = "update place set img='$picName' where name='$name' ";
 	$r = @mysqli_query($dbc,$q);
+	if($r){
     echo "<font color='#FF0000'>图片文件上传成功！</font><br/>";
     echo "图片预览：<br><div style=' 1px solid; width:200px;height:200px'>
-    <img src=\"".$picName."\" width=200px height=200px>".$fname."</div>";
+    <img src=\"".$picName."\" width=200px height=200px>".$date."</div>";
     }
+	}
       }
 ?>
 
@@ -112,7 +111,7 @@ $upfile= './image/';
 </div>
 </div>
 <div class = "sidinside">
-<a class="buttongreen" href="person.html">返回</a>
+<a class="buttongreen" href="ManagePoint.html">返回</a>
 </div>
 <!-- end of main home -->
 <div class="container">

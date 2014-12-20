@@ -1,11 +1,3 @@
-<?php
-	session_start();
-	if(!isset($_SESSION['ID']))
-	{
-		require('loginfunction.php');
-		redirect_user('login.html');
-	}
-?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> </html><![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> </html><![endif]-->
@@ -14,8 +6,8 @@
 <head>
 	<meta charset="utf-8" />
 	<title>目的地</title>
-	<meta name="description" content="" />
-	<meta name="author" content="" />
+	<meta name="description" content="Tour Pal Home" />
+	<meta name="author" content="solojoe" />
 	<!-- Mobile Specific Metas
   ================================================== -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
@@ -32,10 +24,10 @@
 	<!-- Favicons
 	================================================== -->
 
-              <script type="text/javascript" src="./js/jquery.1.70.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
         <script type="text/javascript" src="./js/jquery.eislideshow.js"></script>
         <script type="text/javascript" src="./js/jquery.easing.1.3.js"></script>
-		<script type="text/javascript" src="./js/jquery.tweet.js"></script>	
+        <script type="text/javascript" src="./js/jquery.tweet.js"></script>		
         <script type="text/javascript" src="./js/custom.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 <body>
@@ -44,77 +36,54 @@
 <div class="Catalog">
 <img src="./images/logo.png" alt="" class="logo"  height="50" width="70"/>
 <ul class="menu">
-<li><a href="./index.html">首页</a></li>
-<li><a href="./find.html">寻找景点</a></li>
-<li><a href="./person.html">个人中心</a></li>
-<li><a href="./BBS.html">BBS论坛</a></li>
-<li><a href="./team.html">我们的团队</li>
-<li><a href="./contact.html">联系我们</a></li>
-<li><a href="./logout.php">退出</a></li>
+
+<li><a href="./login.html">会员登录</a></li>
+<li><a href="./page.html">新用户注册</a></li>
 </ul>
 </div>
 </div>
 </div>
 <!-- end of header -->
 <?php
-require('mysql.php');
-$ID = $_SESSION['ID'];
-?>
-<div id="main" class="container">
-<div class="contactform">
-<div class="ten columns">
-<div align="center" style="width:50%; height:300px; font-size:13px">
-<h3>上传图片预览</h3>
-<form name="frm" method="post" enctype="multipart/form-data">
- <input name='upfile' type='file' /></br>
- <input name="btn" type="submit" value="上传" /><br />
-</form>
-<?php
-//全局变量
-$max_size='500000'; 
-$upfile= './image/';
-   if($_SERVER['REQUEST_METHOD']=='POST'){ 
-   $file=$_FILES['upfile'];
-     if(!is_uploaded_file($file['tmp_name'])){ 
-    echo "<font color='#FF0000'>文件不存在！</font>";
-    exit;
-    }
-  
-  if($file['size']>$max_size){ 
-    echo "<font color='#FF0000'>上传文件太大！</font>";
-    exit;
-   }
-    if(!file_exists($upfile)){ 
-   mkdir($upfile,0777,true);
-   }
- 
-    $imageSize=getimagesize($file['tmp_name']);
-   $img=$imageSize[0].'*'.$imageSize[1];
-   $fname=$file['name'];
-   $ftype=explode('.',$fname);
-   $picName=$upfile.$_SESSION['name'].$fname;
-   if(!move_uploaded_file($file['tmp_name'],$picName)){ 
-    echo "<font color='#FF0000'>移动文件出错！</font>";
-    exit;
-    }
-   else{
-    $q = "update PI set img = '$picName' where ID = '$ID' ";
-	$r = @mysqli_query($dbc,$q);
-    echo "<font color='#FF0000'>图片文件上传成功！</font><br/>";
-    echo "图片预览：<br><div style=' 1px solid; width:200px;height:200px'>
-    <img src=\"".$picName."\" width=200px height=200px>".$fname."</div>";
-    }
-      }
-?>
+	if($_SERVER['REQUEST_METHOD'] == 'POST'){
+		require('loginfunction2.php');
+		require('mysql.php');
+		list($check, $data) =check_login($dbc, $_POST['fname'], $_POST['fmail']);
+		if($check){
+			session_start();
+			$_SESSION['manageID'] = $data['name'];
+			redirect_user('ManagePoint.html');
+		}
+		else{
+			$errors = $data;
+		}
+		mysqli_close($dbc);
+	}
+echo
+'<div id="main" class="container">
 
+<div class="five columns sidebarhome aspages">
+<div class="sidinside">
+
+<div class="widget">
+<div class="h4bg"><h3>ERRORS!</h3></div>
+<div class="clear"></div>';
+foreach($errors as $mes)
+{
+	echo "-$mes<br/>";
+}
+echo
+'</div>
 </div>
 </div>
 </div>
-</div>
-<div class = "sidinside">
-<a class="buttongreen" href="person.html">返回</a>
-</div>
+';
+
+?>
+<a href="./manage.html" class="buttongreen">重新登录</a>
 <!-- end of main home -->
+
+<div class="footerstrip">
 <div class="container">
 <div class="sixteen columns">
 觉得网站不错？分享给其他人吧！！！
@@ -127,6 +96,7 @@ $upfile= './image/';
 <li class="flickr"><a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"><img src="./images/flickr.png" alt="flickr" /></a></li>
 </ul>
 
+</div>
 </div>
 </div>
 <!-- end funter -->
