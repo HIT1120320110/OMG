@@ -106,6 +106,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 			$img = "./images/h6.png";
 			$love = './txt/'.$ID.'-love'.'.txt';
 			$lovespace = './txt/'.$ID.'-loveplace'.'.txt';
+			$thread = './txt/'.$ID.'-thread'.'.txt';
 			$tour = './txt/tour/'.$ID.'/my'.'.txt';
 			$file = fopen("$love","a");
 			fwrite($file,"/\r\n");
@@ -114,6 +115,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 			fwrite($file,"/\r\n");
 			fclose($file);
 			$q = "insert into PI values('$ID','$love','$img','$lovespace')";
+			$r = @mysqli_query($dbc,$q);
+			$file = fopen("$thread","a");
+			fwrite($file,"/\r\n");
+			fclose($file);
+			$q = "insert into myteam values('$ID','$thread')";
 			$r = @mysqli_query($dbc,$q);
 			echo '<strong>you are now registered<br/></strong>';
 			echo '<p><a href="./login.html" class="buttongreen">login</a></p>';

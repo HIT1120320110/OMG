@@ -77,6 +77,218 @@
 	}
 ?>
 <?php
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	if($_POST['xx']==1){
+		$file =fopen("$lovespace","a");
+		fwrite($file,$_POST['place']);
+		fwrite($file,"\r\n");
+		$name = $_POST['place'];
+		$q = "SELECT * FROM placelove WHERE name = '$name'";
+		$r = @mysqli_query($dbc,$q);
+		$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+		$filepath = $row['loveperson'];
+		$q = "SELECT * FROM users WHERE ID = '$ID'";
+		$r = @mysqli_query($dbc,$q);
+		$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+		$name = $row['name'];
+		$file =fopen("$filepath","a");
+		fwrite($file,$name);
+		fwrite($file,"\r\n");
+			if($page=="")
+	{
+    $page=1;
+	}
+	$query="select count(*) from Place";
+    $result = @mysqli_query($dbc,$query);
+	$page_size=2;
+    $row= mysqli_fetch_array($result);
+	$message_count=$row[0];
+	 $page_count=ceil($message_count/$page_size);
+    $offset=($page-1)*$page_size;
+    $result=@mysqli_query($dbc,"select * from Place limit $offset,$page_size");
+	while($row = mysqli_fetch_row($result))
+    {
+	$q="select * from PlaceD where name='$row[0]'";
+    $r = @mysqli_query($dbc,$q);
+    $ro= mysqli_fetch_array($r);
+	$action = $ro['action'];
+	$author = $ro['author'];
+	echo '<div class="blogpost">
+		<a href="#" class="featuredimg"><img src="'.$row[1].'" alt="post" /></a>
+		<div class="excerpt">
+		<h3><a href="#">'.$row[0].'&nbsp&nbsp</a></h3>
+		<div class="whos">
+	<div><span>地理位置:&nbsp;</span> '.$action.'</div>
+	<div><span>推荐人:&nbsp;</span> <a href="#">'.$author.'</a></div>
+	<br/>
+	<br/>
+	<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span>'; 
+	$i = 0;
+	foreach($aa as $value)
+	{
+	$value = trim($value);
+		if($value == $row[0])
+		{
+			$i=1;
+			break;
+		}
+	}
+	if($i==1){
+	echo '<form method="post" action="find.html">
+	<input type="hidden" name="place" value="'.$row[0].'">
+	<input type="hidden" name="xx" value="0">
+	<input type="submit" class="buttongreen" value="取消赞"></div>
+	</form>';
+	}
+	else{
+	echo '<form method="post" action="find.html">
+	<input type="hidden" name="place" value="'.$row[0].'">
+	<input type="hidden" name="xx" value="1">
+	<input type="submit" class="buttongreen" value="赞一个"></div>
+	</form>';
+	}
+	echo '</div>
+	<div class="excerpt2">';
+	$p = $row[2];
+	$file = file($p);
+		$i = 0;
+		foreach($file as $value)
+		{
+			if($i<2)
+			{
+				echo $value;
+			}
+			$i =$i+1;
+		}
+	echo '
+	</p>
+	</div>
+	</div>
+	</div>';
+	}
+	}
+	else{
+		$file =file("$lovespace");
+		 $aa = array();
+		foreach($file as $value)
+		{
+		$value = trim($value);
+		if($value != $name)
+		 {
+			$aa[] = $value;
+		 }
+		}
+		 $open=fopen("$lovespace","w" );
+		foreach($aa as $value)
+		{
+			if($value!=$_POST['place']){
+			fwrite($open,$value);
+			fwrite($open,"\r\n");
+			}
+		}
+		fclose($open);
+		$name = $_POST['place'];
+		$q = "SELECT * FROM placelove WHERE name = '$name'";
+		$r = @mysqli_query($dbc,$q);
+		$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+		$filepath = $row['loveperson'];
+		$q = "SELECT * FROM users WHERE ID = '$ID'";
+		$r = @mysqli_query($dbc,$q);
+		$row = mysqli_fetch_array($r,MYSQLI_ASSOC);
+		$name = $row['name'];
+		$file =file("$filepath");
+		 $aa = array();
+		foreach($file as $value)
+		{
+		$value = trim($value);
+		if($value != $name)
+		 {
+			$aa[] = $value;
+		 }
+		}
+		 $open=fopen("$filepath","w" );
+		foreach($aa as $value)
+		{
+			if($value!=$name){
+			fwrite($open,$value);
+			fwrite($open,"\r\n");
+			}
+		}
+	if($page=="")
+	{
+    $page=1;
+	}
+	$query="select count(*) from Place";
+    $result = @mysqli_query($dbc,$query);
+	$page_size=2;
+    $row= mysqli_fetch_array($result);
+	$message_count=$row[0];
+	 $page_count=ceil($message_count/$page_size);
+    $offset=($page-1)*$page_size;
+    $result=@mysqli_query($dbc,"select * from Place limit $offset,$page_size");
+	while($row = mysqli_fetch_row($result))
+    {
+	$q="select * from PlaceD where name='$row[0]'";
+    $r = @mysqli_query($dbc,$q);
+    $ro= mysqli_fetch_array($r);
+	$action = $ro['action'];
+	$author = $ro['author'];
+	echo '<div class="blogpost">
+		<a href="#" class="featuredimg"><img src="'.$row[1].'" alt="post" /></a>
+		<div class="excerpt">
+		<h3><a href="#">'.$row[0].'&nbsp&nbsp</a></h3>
+		<div class="whos">
+	<div><span>地理位置:&nbsp;</span> '.$action.'</div>
+	<div><span>推荐人:&nbsp;</span> <a href="#">'.$author.'</a></div>
+	<br/>
+	<br/>
+	<div><span>想去就赞一个，说不定<br/>驴友已经等着你了:&nbsp;</span>'; 
+	$i = 0;
+	foreach($aa as $value)
+	{
+	$value = trim($value);
+		if($value == $row[0])
+		{
+			$i=1;
+			break;
+		}
+	}
+	if($i==1){
+	echo '<form method="post" action="find.html">
+	<input type="hidden" name="place" value="'.$row[0].'">
+	<input type="hidden" name="xx" value="0">
+	<input type="submit" class="buttongreen" value="取消赞"></div>
+	</form>';
+	}
+	else{
+	echo '<form method="post" action="find.html">
+	<input type="hidden" name="place" value="'.$row[0].'">
+	<input type="hidden" name="xx" value="1">
+	<input type="submit" class="buttongreen" value="赞一个"></div>
+	</form>';
+	}
+	echo '</div>
+	<div class="excerpt2">';
+	$p = $row[2];
+	$file = file($p);
+		$i = 0;
+		foreach($file as $value)
+		{
+			if($i<2)
+			{
+				echo $value;
+			}
+			$i =$i+1;
+		}
+	echo '
+	</p>
+	</div>
+	</div>
+	</div>';
+	}
+}
+}
+else{
 	if($page=="")
 	{
     $page=1;
@@ -119,18 +331,19 @@
 		}
 	}
 	if($i==1){
-	?>
-	<a  class="buttongreen" href="#"><h4>已赞</h4></a></div>
-
-	<?php
+	echo '<form method="post" action="find.html">
+	<input type="hidden" name="place" value="'.$row[0].'">
+	<input type="hidden" name="xx" value="0">
+	<input type="submit" class="buttongreen" value="取消赞"></div>
+	</form>';
 	}
 	else{
-	echo '<form method="post" >
+	echo '<form method="post" action="find.html">
 	<input type="hidden" name="place" value="'.$row[0].'">
+	<input type="hidden" name="xx" value="1">
 	<input type="submit" class="buttongreen" value="赞一个"></div>
 	</form>';
 	}
-
 	echo '</div>
 	<div class="excerpt2">';
 	$p = $row[2];
@@ -144,11 +357,12 @@
 			}
 			$i =$i+1;
 		}
-	echo '<a href="#">更多信息</a>
+	echo '
 	</p>
 	</div>
 	</div>
 	</div>';
+}
 }
 ?>
 

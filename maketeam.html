@@ -31,7 +31,7 @@
 	<![endif]-->
 	<!-- Favicons================================================== -->
 
-               <script type="text/javascript" src="./js/jquery.1.70.js"></script>
+                <script type="text/javascript" src="./js/jquery.1.70.js"></script>
         <script type="text/javascript" src="./js/jquery.eislideshow.js"></script>
         <script type="text/javascript" src="./js/jquery.easing.1.3.js"></script>
         <script type="text/javascript" src="./js/jquery.tweet.js"></script>		
@@ -46,7 +46,8 @@
 <li><a href="./index.html">首页</a></li>
 <li><a href="./find.html">寻找景点</a></li>
 <li><a href="./person.html">个人中心</a>
-<li><a href="./BBS.html"></a>BBS论坛</li>
+</li>
+<li><a href="./BBS.html">BBS论坛</a></li>
 <li><a href="./team.html">我们的团队</a></li>
 <li><a href="./contact.html">联系我们</a></li>
 <li><a href="./logout.php">退出</a></li>
@@ -55,67 +56,83 @@
 </div>
 </div>
 <div id="main" class="container">
-<div class="five columns sidebarhome aspages">
-<div class="sidinside">
-
-<div class="widget">
-<div class="h4"><a href="maketeam.html"><h3>招募团队</h3></a></div>
-<div class="clear"></div>
-</div>
-<div class="widget">
-<div class="h4bg"><h4>我的团队</h4></div>
+<div class="contactform">
+<div class="ten columns">
+<div class="pad">
 <?php
 	require('mysql.php');
+	if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	$a = $_POST['fname'];
+	$b = $_POST['fmail'];
+	$c = $_POST['fweb'];
+	$d = $_POST['fsub'];
+	$e = $_POST['fmessage'];
 	$ID = $_SESSION['ID'];
+	$q = "insert into Thread values('$a','$ID','$b','$d','$e','$c')";
+	$result = @mysqli_query($dbc,$q);
 	$filepath = './txt/'.$ID.'-thread.txt';
-	$ss = file($filepath);
-	$i = 0;
-	foreach($ss as $a)
+	$file = fopen("$filepath","a");
+	fwrite($file,$a);
+	fwrite($file,"\r\n");
+	fclose($file);
+	if($result)
 	{
-		if($i !=0){
-		echo"<div  class='pad' style='color:#000'><h2>";
-		echo '<a href="./changeteam.php? teamname='.$a.'" >';
-		echo $a;
-		echo "</a></h2></div>";
-		}
-		$i =$i+1;
+	
+		$date = date('YmdHms');
+		$b = './txt/Thread/'.$date.'1.txt';
+		$c = './txt/Thread/'.$date.'2.txt';
+		$file =fopen("$b","a");
+		fwrite($file,$ID);
+		fwrite($file,"\r\n");
+		fopen("$c","a");
+		$q = "insert into ThreadL values('$a','$b','$c')";
+		$result = @mysqli_query($dbc,$q);
+		echo "<h3>发表成功<h3>";
+		echo '<a href="BBS.html" class="buttongreen">返回</a>';
 	}
-            
+	else
+	{
+		echo "<h3>发表失败<h3>";
+		echo '<a href="maketeam.html" class="buttongreen">重新招募</a>';
+	}
+	}
+	else{
 ?>
-<div class="clear"></div>
-</div>
+<h3>
+创建团队
+</h3>
 
-</div>	
+<form action="maketeam.html" method="post" id="formc" >
+<div class="forty">
+<strong><label>团队名称:</label>
+<input type="text" name="fname" id="fname" value="" />
 </div>
-<div class="eleven columns">
+<div class="forty">
+<label>想去的地方:</label>
+<input type="text" name="fmail" id="fname" value="" />
+</div>
+<div class="forty">
+<label>招募人数:</label>
+<input type="text" name="fweb" id="fname" value="" />
+</div>
+<div class="forty">
+<label>可接受价格区间</label>
+<input type="text" name="fsub" id="fname" value="" />
+</div>
+<label>主题详细描述</label>
+<textarea id="fmessage" name="fmessage"></textarea></strong>
+<input type="submit" class="buttongreen" id="fsubmit" name="fsubmit" value="立即招募" />
+</form>
 <?php
-
-if($page=="")
-{
-$page=1;
 }
-$query="select count(*) from Thread";
-$result = @mysqli_query($dbc,$query);
-$page_size=5;
-$row= mysqli_fetch_array($result);
-$message_count=$row[0];
-$page_count=ceil($message_count/$page_size);
-$offset=($page-1)*$page_size;
-$result=@mysqli_query($dbc,"select * from Thread limit $offset,$page_size");
-while($row = mysqli_fetch_row($result))
- {
-	$I = $row[1];
-	$query="select name from users where ID='$I'";
-	$result = @mysqli_query($dbc,$query);
-	$ro= mysqli_fetch_array($result);
- }
-
 ?>
-
 </div>
 </div>
- 
+</div>
+</div>
 <!-- end of contactform wrap -->
+
+
 <div class="container">
 <div class="sixteen columns">
 觉得网站不错？分享给其他人吧！！！
