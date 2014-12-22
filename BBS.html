@@ -46,8 +46,8 @@
 <li><a href="./index.html">首页</a></li>
 <li><a href="./find.html">寻找景点</a></li>
 <li><a href="./person.html">个人中心</a>
-<li><a href="./BBS.html"></a>BBS论坛</li>
-<li><a href="./team.html">我们的团队</a></li>
+<li><a href="./BBS.html"></a>在线组团</li>
+<li><a href="./team.html">我的消息</a></li>
 <li><a href="./contact.html">联系我们</a></li>
 <li><a href="./logout.php">退出</a></li>
 </ul>
@@ -96,7 +96,7 @@ $page=1;
 }
 $query="select count(*) from Thread";
 $result = @mysqli_query($dbc,$query);
-$page_size=5;
+$page_size=3;
 $row= mysqli_fetch_array($result);
 $message_count=$row[0];
 $page_count=ceil($message_count/$page_size);
@@ -106,12 +106,41 @@ while($row = mysqli_fetch_row($result))
  {
 	$I = $row[1];
 	$query="select name from users where ID='$I'";
-	$result = @mysqli_query($dbc,$query);
-	$ro= mysqli_fetch_array($result);
+	$r = @mysqli_query($dbc,$query);
+	$ro= mysqli_fetch_array($r);
+	$name = $ro['name'];
+	echo '<div class="blogpost">
+		<div class="excerpt"><div class="whos"><div style=" font-size:16px; color:#000"><span>'.$row[0].'&nbsp;</span></div>';
+	echo '<div style=" font-size:16px; color:#000"><span>创建者:'.$name.'&nbsp;</span></div>
+	<div style=" font-size:18px; color:#000"><span><a href="./changeteam.php? teamname='.$row[0].'" >查看详情&nbsp;</a></span></div>
+	</div></div></div>';
  }
-
 ?>
-
+<?php
+if($page==1)
+{
+	$pagenow = $page+1;
+echo '<div class="navigate">
+<a href="./BBS.html?page='.$pagenow.'" class="rarr">下一页 &rarr;</a>
+</div>';
+}
+elseif(($page+1)*3>$message_count)
+{
+$pagenow = $page-1;
+echo '<div class="navigate">
+<a href="./BBS.html?page='.$pagenow.'" class="larr">&larr; 上一页</a>
+</div>';
+}
+else
+{
+$pagenow1 = $page-1;
+$pagenow = $page+1;
+echo'<div class="navigate">
+<a href="./BBS.html?page='.$pagenow.'"  class="larr">&larr; 上一页</a>
+<a href="./BBS.html?page='.$pagenow.'"  class="rarr">下一页 &rarr;</a>
+</div>';
+}
+?>
 </div>
 </div>
  

@@ -48,8 +48,8 @@
 <li><a href="./index.html">首页</a></li>
 <li><a href="./find.html">寻找景点</a></li>
 <li><a href="./person.html">个人中心</a>
-<li><a href="./BBS.html">BBS论坛</a></li>
-<li><a href="./team.html">我们的团队</a></li>
+<li><a href="./BBS.html">在线组团</a></li>
+<li><a href="./team.html">我的消息</a></li>
 <li><a href="./contact.html">联系我们</a></li>
 <li><a href="./logout.php">退出</a></li>
 </ul>
@@ -82,7 +82,7 @@
 	foreach($file as $value)
 		{
 			$value = trim($value);
-			if($value = $ID)
+			if($value == $ID)
 			{
 				$i = $i+1;
 				break;
@@ -104,19 +104,19 @@
 		$fmessage = $_POST['fmessage'];
 		$date = $_POST['xx'];
 		$file = fopen("$reply","a");
-		fwrite($file,"\r\n");
 		fwrite($file,$name);
 		fwrite($file,"\r\n");
 		fwrite($file,$date);
 		fwrite($file,"\r\n");
 		fwrite($file,$fmessage);
+		fwrite($file,"\r\n");
 	}
 	echo $name;
 	echo'<br/></div>
 	<div style=" font-size:18px; color:#000">目的地:'.$a.'<br /></div>
 	<div style=" font-size:18px; color:#000">招募人数:'.$number.'<br /></div>
 	<div style=" font-size:18px; color:#000">价格区间:'.$b.'<br /></div>
-	<div class="excerpt2" style=" font-size:14px; color:#000"> <br/>'.$message.'<br/>';
+	<div class="excerpt2" style=" font-size:18px; color:#000"> <br/>'.$message.'<br/>';
 	$file = file($reply);
 	$aa = array();
 	$j=0;
